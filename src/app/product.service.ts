@@ -9,4 +9,10 @@ export class ProductService {
   create(product){
     this.db.list('/products').push(product);
   }
+
+  // Gets the list of products from firebase.
+  getAll()
+  {
+    return this.db.list('/products');
+  }
 }
