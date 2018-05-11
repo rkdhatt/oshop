@@ -1,7 +1,8 @@
 import { ProductService } from './../../product.service';
 import { CategoryService } from './../../category.service';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import 'rxjs/add/operator/take'; // can take only one value from our observable and that observable will automatically complete -- therefore don't have to unsubscribte.
 
 @Component({
   selector: 'app-product-form',
@@ -10,12 +11,17 @@ import { Router } from '@angular/router';
 })
 export class ProductFormComponent implements OnInit {
   categories$;
-
+  product = {}; //must set to empty object instead of null
+  
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private categoryService: CategoryService, 
     private productService: ProductService) { 
     this.categories$ = categoryService.getCategories();
+
+    let id =  this.route.snapshot.paramMap.get('id');
+    if (id) this.productService.get(id).take(1).subscribe(p => this.product = p); // must subscribe to read product.
   }
 
   save(product){
