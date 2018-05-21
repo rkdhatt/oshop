@@ -20,4 +20,9 @@ export class ProductService {
   get(productId) {
     return this.db.object('/products/' + productId);
   }
+
+  update(productId, product) {
+    // have to pass ID separately.
+    this.db.object('/products/' +productId).update(product);
+  }
 }
